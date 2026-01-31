@@ -25,7 +25,7 @@ Le projet est organisé de manière modulaire pour faciliter la maintenance :
 3. **Design Adaptatif (Responsive) :** Interface optimisée pour Mobile, Tablette et Desktop grâce à Bootstrap.
 4. **Sécurité (CSP) :** Mise en place d'une Content Security Policy pour sécuriser les flux de données.
 
-## 🛠️ Installation et test en local...
+## 🛠️ Installation et test en local
 1. Cloner le dépôt :
    ```bash
    git clone [https://github.com/BOUDI1/restaurquaiantique.git](https://github.com/BOUDI1/restaurquaiantique.git)
