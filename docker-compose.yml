@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  quai-antique-web:
+    # Construit l'image à partir du Dockerfile présent ici
+    build: .
+    # Nom du conteneur pour le retrouver facilement
+    container_name: quai_antique_container
+    # Redirige le port 8080 de votre PC vers le port 80 du conteneur
+    ports:
+      - "8080:80"
+    # Synchronise vos fichiers locaux avec le conteneur (Hot Reload)
+    volumes:
+      - .:/usr/share/nginx/html
