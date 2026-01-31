@@ -29,8 +29,12 @@ Le projet est organisé de manière modulaire pour faciliter la maintenance :
 1. Cloner le dépôt :
    ```bash
    git clone [https://github.com/BOUDI1/restaurquaiantique.git](https://github.com/BOUDI1/restaurquaiantique.git)
-   
+
    ## 🐳 Lancement avec Docker
 1. Assurez-vous d'avoir Docker Desktop installé.
 2. Lancez `docker-compose up -d` à la racine.
 3. Accédez à l'application sur `http://localhost:8080`.
+*
+## 🌐 Déploiement
+Le projet est hébergé en production sur Alwaysdata :
+URL : [https://votre-lien.alwaysdata.net](https://votre-lien.alwaysdata.net)
