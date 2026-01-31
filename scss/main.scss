@@ -1,1 +1,16 @@
-@import 'custom';
+// 1. Importation des variables
+@import "custom";
+
+// 2. Styles globaux
+body {
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+main {
+    min-height: 80vh; // Assure que le footer reste en bas
+}
+
+// 3. Importation du responsive
+@import "responsive";

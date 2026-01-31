@@ -1,5 +1,26 @@
-$primary:#90277d;
+// --- VARIABLES ---
+$primary-gold: #d4a373; // Couleur dorée (Gastronomie)
+$dark-elegant: #1a1a1a; // Noir profond
+$light-bg: #f8f9fa;
+$white: #ffffff;
 
-@import "../node_modules/bootstrap/scss/bootstrap.scss"
+// --- COMPOSANTS PERSONNALISÉS ---
+.hero-section {
+    background-color: $dark-elegant;
+    h1 {
+        color: $primary-gold;
+        font-family: 'Playfair Display', serif;
+        text-transform: uppercase;
+    }
+}
 
-
+.btn-quai {
+    background-color: $primary-gold;
+    color: $dark-elegant;
+    border: 2px solid $primary-gold;
+    font-weight: bold;
+    &:hover {
+        background-color: transparent;
+        color: $primary-gold;
+    }
+}

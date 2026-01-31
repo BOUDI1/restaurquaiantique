@@ -1,64 +1,54 @@
-import Route from "./Route.js";
-import { allRoutes, websiteName } from "./allRoutes.js";
+import { Route } from "./Route.js"; // Vérifie si c'est Route.js ou route.js
+import { allRoutes } from "./allRoutes.js";
+// Titre par défaut du site
+const titreApplication = "Quai Antique";
 
-// Création d'une route pour la page 404 (page introuvable)
-const route404 = new Route("404", "Page introuvable", "/pages/404.html");
+// Fonction pour gérer les clics sur les liens de navigation
+window.route = (event) => {
+    event = event || window.event;
+    event.preventDefault(); // Empêche le rechargement de la page
+    window.history.pushState({}, "", event.target.href);
+    chargerContenuPage();
+};
 
-// Fonction pour récupérer la route correspondant à une URL donnée
-const getRouteByUrl = (url) => {
-  let currentRoute = null;
-  // Parcours de toutes les routes pour trouver la correspondance
-  allRoutes.forEach((element) => {
-    if (element.url == url) {
-      currentRoute = element;
+// Fonction principale qui charge le HTML et le JS de la page demandée
+const chargerContenuPage = async () => {
+    const path = window.location.pathname;
+    
+    // On cherche la route correspondante dans allRoutes.js
+    const route = allRoutes.find((r) => r.url === path) || allRoutes[0];
+
+    try {
+        // 1. Récupération du fichier HTML (ex: pages/galerie.html)
+        const response = await fetch(route.pathHtml);
+        if (!response.ok) throw new Error("Page introuvable");
+        const html = await response.text();
+
+        // 2. Injection du HTML dans la zone "main-page" de ton index.html
+        document.getElementById("main-page").innerHTML = html;
+
+        // 3. Mise à jour du titre de l'onglet du navigateur
+        document.title = route.title + " - " + titreApplication;
+
+        // 4. Si la route a un fichier JS (comme la galerie), on le charge
+        if (route.pathJS) {
+            // On importe dynamiquement le module JS
+            import("../" + route.pathJS).then((module) => {
+                // On appelle la fonction de chargement spécifique (ex: loadGallery)
+                if (path === "/galerie") {
+                    module.loadGallery();
+                }
+                // Tu pourras ajouter d'autres conditions ici pour d'autres pages
+            });
+        }
+    } catch (error) {
+        console.error("Erreur de routage :", error);
+        document.getElementById("main-page").innerHTML = "<h1>Erreur 404</h1><p>Page non trouvée.</p>";
     }
-  });
-  // Si aucune correspondance n'est trouvée, on retourne la route 404
-  if (currentRoute != null) {
-    return currentRoute;
-  } else {
-    return route404;
-  }
 };
 
-// Fonction pour charger le contenu de la page
-const LoadContentPage = async () => {
-  const path = window.location.pathname;
-  // Récupération de l'URL actuelle
-  const actualRoute = getRouteByUrl(path);
-  // Récupération du contenu HTML de la route
-  const html = await fetch(actualRoute.pathHtml).then((data) => data.text());
-  // Ajout du contenu HTML à l'élément avec l'ID "main-page"
-  document.getElementById("main-page").innerHTML = html;
+// Gère le bouton "Précédent/Suivant" du navigateur
+window.onpopstate = chargerContenuPage;
 
-  // Ajout du contenu JavaScript
-  if (actualRoute.pathJS != "") {
-    // Création d'une balise script
-    var scriptTag = document.createElement("script");
-    scriptTag.setAttribute("type", "text/javascript");
-    scriptTag.setAttribute("src", actualRoute.pathJS);
-
-    // Ajout de la balise script au corps du document
-    document.querySelector("body").appendChild(scriptTag);
-  }
-
-  // Changement du titre de la page
-  document.title = actualRoute.title + " - " + websiteName;
-};
-
-// Fonction pour gérer les événements de routage (clic sur les liens)
-const routeEvent = (event) => {
-  event = event || window.event;
-  event.preventDefault();
-  // Mise à jour de l'URL dans l'historique du navigateur
-  window.history.pushState({}, "", event.target.href);
-  // Chargement du contenu de la nouvelle page
-  LoadContentPage();
-};
-
-// Gestion de l'événement de retour en arrière dans l'historique du navigateur
-window.onpopstate = LoadContentPage;
-// Assignation de la fonction routeEvent à la propriété route de la fenêtre
-window.route = routeEvent;
-// Chargement du contenu de la page au chargement initial
-LoadContentPage();
+// Charge la page initiale au démarrage
+document.addEventListener("DOMContentLoaded", chargerContenuPage);

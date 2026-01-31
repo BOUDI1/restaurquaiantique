@@ -1,0 +1,13 @@
+// --- ADAPTATION MOBILE ---
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 40vh; // Plus petit sur mobile
+        h1 {
+            font-size: 1.8rem;
+        }
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
